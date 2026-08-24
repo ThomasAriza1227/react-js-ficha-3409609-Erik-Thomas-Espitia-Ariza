@@ -32,6 +32,12 @@ const productos = [
 ];
 
 
+const nombres = productos.map(producto => {
+  return producto.nombre;
+});
+
+
+
 
 
 
