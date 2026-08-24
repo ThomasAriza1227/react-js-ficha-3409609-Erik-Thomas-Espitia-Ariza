@@ -41,6 +41,14 @@ const disponibles = productos.filter(
   producto => producto.stock > 0
 );
 
+const hayAgotados = productos.some(p => p.stock === 0);
+
+const preciosValidos = productos.every(p => p.precio > 0);
+
+const valorInventario = productos.reduce(
+  (total, p) => total + p.precio * p.stock,
+  0
+);
 
 
 
