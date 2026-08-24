@@ -50,6 +50,17 @@ const valorInventario = productos.reduce(
   0
 );
 
+const producto = productos[0];
+
+const actualizado = { ...producto, stock: 8 };
+
+const { nombre, precio, stock } = actualizado;
+
+const estado = stock > 0 ? 'Disponible' : 'Agotado';
+
+console.log(`Producto: ${nombre} - $${precio}`);
+console.log(`Estado: ${estado}`);
+
 
 
 function App() {
