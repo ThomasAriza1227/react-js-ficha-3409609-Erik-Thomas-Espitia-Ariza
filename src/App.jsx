@@ -14,6 +14,11 @@ const resultado = calcularTotal(50000, 3);
 console.log(resultado); // 150000q
 
 
+const aplicarIva = (precio) => {
+  return precio * 1.19;
+};
+
+
 
 
 
