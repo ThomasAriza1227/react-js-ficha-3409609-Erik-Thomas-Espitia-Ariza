@@ -34,13 +34,6 @@ function App() {
           <ProductoCard key={producto.id} producto={producto} />
         ))}
       </section>
-
-      <h2>Solo disponibles</h2>
-      <section className="productos">
-        {disponibles.map((producto) => (
-          <ProductoCard key={producto.id} producto={producto} />
-        ))}
-      </section>
     </main>
   );
 }
