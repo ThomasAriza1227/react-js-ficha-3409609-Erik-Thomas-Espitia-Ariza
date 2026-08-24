@@ -37,6 +37,9 @@ const nombres = productos.map(producto => {
 });
 
 
+const disponibles = productos.filter(
+  producto => producto.stock > 0
+);
 
 
 
