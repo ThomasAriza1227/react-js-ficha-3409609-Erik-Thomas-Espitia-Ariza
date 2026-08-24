@@ -3,6 +3,9 @@ import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
+import ProductoCard from './components/ProductoCard';
+import { productos } from './data/productos';
+
 
 
 function calcularTotal(precio, cantidad) {
@@ -62,15 +65,16 @@ console.log(`Producto: ${nombre} - $${precio}`);
 console.log(`Estado: ${estado}`);
 
 
-
 function App() {
-  const nombre = 'Thomas';
-  const ficha = 3409609;
-
   return (
     <main>
-      <h1>Hola {nombre}</h1>
-      <p>Ficha {ficha}</p>
+      <h1>Tienda tecnológica</h1>
+      {productos.map(producto => (
+        <ProductoCard
+          key={producto.id}
+          producto={producto}
+        />
+      ))}
     </main>
   );
 }
