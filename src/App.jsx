@@ -5,6 +5,7 @@ import viteLogo from './assets/vite.svg'
 import './App.css'
 import ProductoCard from './components/ProductoCard';
 import { productos } from './data/productos';
+import { useState } from "react";
 
 
 
@@ -53,11 +54,27 @@ console.log(`Estado: ${estado}`);
 
 
 function App() {
-const disponibles = productos.filter(producto => producto.stock > 0);
-const valorInventario = productos.reduce(
-(total, producto) => total + producto.precio * producto.stock,
-0
+// dentro de App():
+const [busqueda, setBusqueda] = useState("");
+
+<input
+  type="text"
+  placeholder="Buscar producto..."
+  value={busqueda}
+  onChange={(evento) => setBusqueda(evento.target.value)}
+/>
+
+const productosFiltrados = productos.filter(producto =>
+  producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
 );
+
+
+{productosFiltrados.length === 0
+  ? <p>No se encontraron productos.</p>
+  : null}
+
+
+
 return (
 <main className="contenedor">
 <h1>Tienda tecnológica</h1>
