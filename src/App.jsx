@@ -1,12 +1,14 @@
 import { useState } from "react";
 import ProductoCard from "./components/ProductoCard";
-import productos from "./data/productos"; 
+import productos from "./data/productos";
+import "./App.css";
 
 function App() {
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
   const [soloDisponibles, setSoloDisponibles] = useState(false);
 
+  // ===== Filtro =====
   const productosFiltrados = productos.filter((producto) => {
     const coincideNombre = producto.nombre
       .toLowerCase()
@@ -20,48 +22,87 @@ function App() {
     return coincideNombre && coincideCategoria && coincideStock;
   });
 
+  // ===== Opción C: Producto económico y premium =====
+  const productoEconomico = productos.reduce((masBarato, actual) =>
+    actual.precio < masBarato.precio ? actual : masBarato
+  );
+
+  const productoPremium = productos.reduce((masCaro, actual) =>
+    actual.precio > masCaro.precio ? actual : masCaro
+  );
+
+  // ===== Opción F: Limpiar filtros =====
+  const limpiarFiltros = () => {
+    setBusqueda("");
+    setCategoria("Todas");
+    setSoloDisponibles(false);
+  };
+
   return (
     <div className="App">
       <h1>Catálogo de Productos</h1>
 
-      {/* Buscador */}
-      <input
-        type="text"
-        placeholder="Buscar producto..."
-        value={busqueda}
-        onChange={(evento) => setBusqueda(evento.target.value)}
-      />
-
-      {/* Filtro por categoría */}
-      <select
-        value={categoria}
-        onChange={(evento) => setCategoria(evento.target.value)}
-      >
-        <option value="Todas">Todas</option>
-        <option value="Perifericos">Periféricos</option>
-        <option value="Pantallas">Pantallas</option>
-        {/* Agrega aquí las categorías reales que tengas en productos.js */}
-      </select>
-
-      {/* Checkbox solo disponibles */}
-      <label>
+      {/* Controles */}
+      <div className="controles">
         <input
-          type="checkbox"
-          checked={soloDisponibles}
-          onChange={(evento) => setSoloDisponibles(evento.target.checked)}
+          type="text"
+          placeholder="Buscar producto..."
+          value={busqueda}
+          onChange={(evento) => setBusqueda(evento.target.value)}
         />
-        Mostrar únicamente disponibles
-      </label>
 
-      {/* Contador dinámico */}
-      <p>Productos encontrados: {productosFiltrados.length}</p>
+        <select
+          value={categoria}
+          onChange={(evento) => setCategoria(evento.target.value)}
+        >
+          <option value="Todas">Todas</option>
+          <option value="Perifericos">Periféricos</option>
+          <option value="Pantallas">Pantallas</option>
+          <option value="Audio">Audio</option>
+          <option value="Almacenamiento">Almacenamiento</option>
+          <option value="Componentes">Componentes</option>
+          <option value="Mobiliario">Mobiliario</option>
+        </select>
 
-      {/* Mensaje cuando no hay resultados */}
-      {productosFiltrados.length === 0 ? (
+        <label>
+          <input
+            type="checkbox"
+            checked={soloDisponibles}
+            onChange={(evento) => setSoloDisponibles(evento.target.checked)}
+          />
+          Solo disponibles
+        </label>
+
+        {/* Botón Limpiar filtros (Opción F) */}
+        <button className="btn-limpiar" onClick={limpiarFiltros}>
+          Limpiar filtros
+        </button>
+      </div>
+
+      {/* Contador */}
+      <p className="contador">
+        Productos encontrados: {productosFiltrados.length}
+      </p>
+
+      {/* Opción C: Producto económico y premium */}
+      <div className="destacados">
+        <div className="destacado economico">
+          <h3>Producto económico</h3>
+          <p><strong>{productoEconomico.nombre}</strong></p>
+          <p>${productoEconomico.precio.toLocaleString("es-CO")}</p>
+        </div>
+
+        <div className="destacado premium">
+          <h3>Producto premium</h3>
+          <p><strong>{productoPremium.nombre}</strong></p>
+          <p>${productoPremium.precio.toLocaleString("es-CO")}</p>
+        </div>
+      </div>
+
+      {productosFiltrados.length === 0 && (
         <p>No se encontraron productos.</p>
-      ) : null}
+      )}
 
-      {/* Lista de productos */}
       <div className="catalogo">
         {productosFiltrados.map((producto) => (
           <ProductoCard key={producto.id} producto={producto} />

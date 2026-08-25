@@ -1,36 +1,225 @@
-.filtros {
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  color: #222;
+}
+
+/* Contenedor principal */
+.App {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Título principal */
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #1a1a1a;          /* color oscuro bien visible */
+  font-size: 2rem;
+}
+
+/* ===== Controles ===== */
+.controles {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin: 18px 0;
-}
-
-.filtros input,
-.filtros select {
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 1rem;
+  align-items: center;
   background: white;
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-.filtros input {
-  min-width: 220px;
-  flex: 1;
+.controles input[type="text"] {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  min-width: 240px;
+  font-size: 15px;
+  color: #222;
 }
 
+.controles select {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background: white;
+  color: #222;
+}
+
+.controles label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #222;
+}
+
+/* Contador */
+.contador {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* ===== GRID DE 3 COLUMNAS ===== */
+.catalogo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);   /* siempre 3 columnas */
+  gap: 22px;
+}
+
+/* ===== TARJETA ===== */
+.producto-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.producto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  border-color: #0d6efd;
+}
+
+/* Título del producto (nombre) */
+.producto-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+  color: #1a1a1a;          /* color oscuro */
+}
+
+.producto-card p {
+  margin: 5px 0;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* Estado Disponible / Agotado */
+.producto-card strong {
+  display: inline-block;
+  margin: 12px 0 16px 0;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.disponible {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.agotado {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+/* Botón */
 .producto-card button {
-  margin-top: 12px;
-  padding: 8px 14px;
+  margin-top: auto;
+  padding: 11px;
   border: none;
   border-radius: 8px;
-  background: #2563eb;
+  background-color: #0d6efd;
   color: white;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
-  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.producto-card button:hover:not(:disabled) {
+  background-color: #0b5ed7;
 }
 
 .producto-card button:disabled {
-  background: #9ca3af;
+  background-color: #adb5bd;
   cursor: not-allowed;
+}
+
+/* Responsivo: en pantallas pequeñas baja a 1 o 2 columnas */
+@media (max-width: 900px) {
+  .catalogo {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .catalogo {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Botón Limpiar filtros ===== */
+.btn-limpiar {
+  padding: 10px 16px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-limpiar:hover {
+  background-color: #5a6268;
+}
+
+/* ===== Producto económico y premium ===== */
+.destacados {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.destacado {
+  flex: 1;
+  background: white;
+  border-radius: 10px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.destacado h3 {
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.destacado p {
+  margin: 4px 0;
+}
+
+.economico {
+  border-left: 5px solid #198754;
+}
+
+.economico h3 {
+  color: #198754;
+}
+
+.premium {
+  border-left: 5px solid #0d6efd;
+}
+
+.premium h3 {
+  color: #0d6efd;
 }

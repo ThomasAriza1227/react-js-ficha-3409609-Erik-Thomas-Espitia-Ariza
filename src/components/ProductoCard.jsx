@@ -17,8 +17,13 @@ function ProductoCard({ producto }) {
       <p>Categoría: {categoria}</p>
       <p>Precio: ${formatearPrecio(precio)}</p>
       <p>Stock: {stock}</p>
-      <strong>{estado}</strong>
+
+      <strong className={stock > 0 ? "disponible" : "agotado"}>
+        {estado}
+      </strong>
+
       <br />
+
       <button
         onClick={mostrarProducto}
         disabled={stock === 0}
