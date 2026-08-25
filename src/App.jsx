@@ -56,28 +56,23 @@ console.log(`Estado: ${estado}`);
 function App() {
 // dentro de App():
 const [busqueda, setBusqueda] = useState("");
+const [categoria, setCategoria] = useState("Todas");
+const [soloDisponibles, setSoloDisponibles] = useState(false);
 
-<input
-  type="text"
-  placeholder="Buscar producto..."
-  value={busqueda}
-  onChange={(evento) => setBusqueda(evento.target.value)}
-/>
 
-const productosFiltrados = productos.filter(producto =>
-  producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
-);
+
+const productosFiltrados = productos.filter(producto => {
+  const coincideNombre = producto.nombre.toLowerCase().includes(busqueda.toLowerCase());
+  const coincideCategoria = categoria === "Todas" || producto.categoria === categoria;
+  return coincideNombre && coincideCategoria;
+  const coincideStock = !soloDisponibles || producto.stock > 0;
+return coincideNombre && coincideCategoria && coincideStock;
+});
 
 
 {productosFiltrados.length === 0
   ? <p>No se encontraron productos.</p>
   : null}
-
-
-const productosFiltrados = productos.filter(producto =>
-  producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
-);
-
 
 
 return (
@@ -90,6 +85,30 @@ return (
   <ProductoCard key={producto.id} producto={producto} />
 ))}
 </section>
+
+
+<input
+  type="text"
+  placeholder="Buscar producto..."
+  value={busqueda}
+  onChange={(evento) => setBusqueda(evento.target.value)}
+/>
+
+<label>
+  <input
+    type="checkbox"
+    checked={soloDisponibles}
+    onChange={(e) => setSoloDisponibles(e.target.checked)}
+  />
+  Mostrar únicamente disponibles
+</label>
+
+<select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+  <option value="Todas">Todas</option>
+  <option value="Perifericos">Periféricos</option>
+  <option value="Pantallas">Pantallas</option>
+</select>
+
 {productosFiltrados.length === 0
   ? <p>No se encontraron productos.</p>
   : null}
@@ -97,6 +116,9 @@ return (
 </main>
 
 );
+<p>Productos encontrados: {productosFiltrados.length}</p>
+{<p>Precio: ${formatearPrecio(precio)}</p>}
+
 }
 
 export default App;

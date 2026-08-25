@@ -26,6 +26,9 @@ Ver producto
 </button>
 </article>
 );
+
+const formatearPrecio = precio => precio.toLocaleString("es-CO");
+
 }
 
 export default ProductoCard;
