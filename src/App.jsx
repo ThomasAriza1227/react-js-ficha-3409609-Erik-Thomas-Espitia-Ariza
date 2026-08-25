@@ -1,12 +1,8 @@
 import { useState } from "react";
-import ProductoCard from "./ProductoCard";
+import ProductoCard from "./components/ProductoCard";
+import productos from "./data/productos"; 
 
 function App() {
-  // Aquí van tus productos del día anterior
-  const productos = [
-    // pega aquí el array de productos que ya tenías
-  ];
-
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
   const [soloDisponibles, setSoloDisponibles] = useState(false);
@@ -25,7 +21,7 @@ function App() {
   });
 
   return (
-    <div>
+    <div className="App">
       <h1>Catálogo de Productos</h1>
 
       {/* Buscador */}
@@ -44,10 +40,10 @@ function App() {
         <option value="Todas">Todas</option>
         <option value="Perifericos">Periféricos</option>
         <option value="Pantallas">Pantallas</option>
-        {/* Agrega aquí las otras categorías que tenías ayer */}
+        {/* Agrega aquí las categorías reales que tengas en productos.js */}
       </select>
 
-      {/* Solo disponibles */}
+      {/* Checkbox solo disponibles */}
       <label>
         <input
           type="checkbox"
@@ -57,18 +53,20 @@ function App() {
         Mostrar únicamente disponibles
       </label>
 
-      {/* Contador */}
+      {/* Contador dinámico */}
       <p>Productos encontrados: {productosFiltrados.length}</p>
 
-      {/* Mensaje sin resultados */}
+      {/* Mensaje cuando no hay resultados */}
       {productosFiltrados.length === 0 ? (
         <p>No se encontraron productos.</p>
       ) : null}
 
       {/* Lista de productos */}
-      {productosFiltrados.map((producto) => (
-        <ProductoCard key={producto.id} producto={producto} />
-      ))}
+      <div className="catalogo">
+        {productosFiltrados.map((producto) => (
+          <ProductoCard key={producto.id} producto={producto} />
+        ))}
+      </div>
     </div>
   );
 }
