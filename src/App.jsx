@@ -1,18 +1,15 @@
 import { useState } from "react";
-import ProductoCard from "./components/ProductoCard";
-import { productos } from "./data/productos";
-import "./App.css";
+import ProductoCard from "./ProductoCard";
 
 function App() {
+  // Aquí van tus productos del día anterior
+  const productos = [
+    // pega aquí el array de productos que ya tenías
+  ];
+
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
-
-  const disponibles = productos.filter((producto) => producto.stock > 0);
-  const hayAgotados = productos.some((producto) => producto.stock === 0);
-  const valorInventario = productos.reduce(
-    (total, producto) => total + producto.precio * producto.stock,
-    0
-  );
+  const [soloDisponibles, setSoloDisponibles] = useState(false);
 
   const productosFiltrados = productos.filter((producto) => {
     const coincideNombre = producto.nombre
@@ -22,62 +19,57 @@ function App() {
     const coincideCategoria =
       categoria === "Todas" || producto.categoria === categoria;
 
-    return coincideNombre && coincideCategoria;
+    const coincideStock = !soloDisponibles || producto.stock > 0;
+
+    return coincideNombre && coincideCategoria && coincideStock;
   });
 
   return (
-    <main className="contenedor">
-      <h1>Tienda tecnológica</h1>
+    <div>
+      <h1>Catálogo de Productos</h1>
 
-      <div className="resumen">
-        <p>
-          <strong>Productos disponibles:</strong> {disponibles.length}
-        </p>
-        <p>
-          <strong>Valor del inventario:</strong> $
-          {valorInventario.toLocaleString("es-CO")}
-        </p>
-        <p>
-          <strong>¿Hay productos agotados?</strong>{" "}
-          {hayAgotados ? "Sí" : "No"}
-        </p>
-      </div>
+      {/* Buscador */}
+      <input
+        type="text"
+        placeholder="Buscar producto..."
+        value={busqueda}
+        onChange={(evento) => setBusqueda(evento.target.value)}
+      />
 
-      {/* Buscador y filtro */}
-      <div className="filtros">
+      {/* Filtro por categoría */}
+      <select
+        value={categoria}
+        onChange={(evento) => setCategoria(evento.target.value)}
+      >
+        <option value="Todas">Todas</option>
+        <option value="Perifericos">Periféricos</option>
+        <option value="Pantallas">Pantallas</option>
+        {/* Agrega aquí las otras categorías que tenías ayer */}
+      </select>
+
+      {/* Solo disponibles */}
+      <label>
         <input
-          type="text"
-          placeholder="Buscar producto..."
-          value={busqueda}
-          onChange={(evento) => setBusqueda(evento.target.value)}
+          type="checkbox"
+          checked={soloDisponibles}
+          onChange={(evento) => setSoloDisponibles(evento.target.checked)}
         />
+        Mostrar únicamente disponibles
+      </label>
 
-        <select
-          value={categoria}
-          onChange={(evento) => setCategoria(evento.target.value)}
-        >
-          <option value="Todas">Todas</option>
-          <option value="Perifericos">Periféricos</option>
-          <option value="Pantallas">Pantallas</option>
-          <option value="Audio">Audio</option>
-          <option value="Almacenamiento">Almacenamiento</option>
-          <option value="Componentes">Componentes</option>
-          <option value="Mobiliario">Mobiliario</option>
-        </select>
-      </div>
+      {/* Contador */}
+      <p>Productos encontrados: {productosFiltrados.length}</p>
 
-      <h2>Productos</h2>
-
+      {/* Mensaje sin resultados */}
       {productosFiltrados.length === 0 ? (
         <p>No se encontraron productos.</p>
-      ) : (
-        <section className="productos">
-          {productosFiltrados.map((producto) => (
-            <ProductoCard key={producto.id} producto={producto} />
-          ))}
-        </section>
-      )}
-    </main>
+      ) : null}
+
+      {/* Lista de productos */}
+      {productosFiltrados.map((producto) => (
+        <ProductoCard key={producto.id} producto={producto} />
+      ))}
+    </div>
   );
 }
 
