@@ -74,6 +74,11 @@ const productosFiltrados = productos.filter(producto =>
   : null}
 
 
+const productosFiltrados = productos.filter(producto =>
+  producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+);
+
+
 
 return (
 <main className="contenedor">
@@ -81,14 +86,16 @@ return (
 <p>Productos disponibles: {disponibles.length}</p>
 <p>Valor del inventario: ${valorInventario}</p>
 <section className="productos">
-{productos.map(producto => (
-<ProductoCard
-key={producto.id}
-producto={producto}
-/>
+{productosFiltrados.map(producto => (
+  <ProductoCard key={producto.id} producto={producto} />
 ))}
 </section>
+{productosFiltrados.length === 0
+  ? <p>No se encontraron productos.</p>
+  : null}
+
 </main>
+
 );
 }
 
