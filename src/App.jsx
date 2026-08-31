@@ -1,13 +1,19 @@
 import { useState } from "react";
 import ProductoCard from "./components/ProductoCard";
-import productos from "./data/productos";
+import FormularioProducto
+from "./components/FormularioProducto";
+import productosIniciales from "./data/productos";
 import "./App.css";
 
+
 function App() {
+  // ===== NUEVO: productos ahora es estado =====
+  const [productos, setProductos] = useState(productosIniciales);
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
   const [soloDisponibles, setSoloDisponibles] = useState(false);
 
+  // ... el resto del código se queda igual por ahora
   // ===== Filtro =====
   const productosFiltrados = productos.filter((producto) => {
     const coincideNombre = producto.nombre
@@ -39,7 +45,9 @@ function App() {
   };
 
   return (
+    
     <div className="App">
+      <FormularioProducto />
       <h1>Catálogo de Productos</h1>
 
       {/* Controles */}
