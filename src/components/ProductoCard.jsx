@@ -1,4 +1,4 @@
-function ProductoCard({ producto }) {
+function ProductoCard({ producto, onEliminar, modificarStock }) {
   const { nombre, precio, categoria, stock } = producto;
 
   const estado = stock > 0 ? "Disponible" : "Agotado";
@@ -14,8 +14,11 @@ function ProductoCard({ producto }) {
   return (
     <article className="producto-card">
       <h2>{nombre}</h2>
+
       <p>Categoría: {categoria}</p>
+
       <p>Precio: ${formatearPrecio(precio)}</p>
+
       <p>Stock: {stock}</p>
 
       <strong className={stock > 0 ? "disponible" : "agotado"}>
@@ -29,6 +32,31 @@ function ProductoCard({ producto }) {
         disabled={stock === 0}
       >
         {stock > 0 ? "Ver producto" : "Agotado"}
+      </button>
+
+      <br />
+
+      {/* Botones para modificar el stock */}
+      <button
+        onClick={() => modificarStock(producto.id, 1)}
+      >
+        + Stock
+      </button>
+<br />
+      <button
+        onClick={() => modificarStock(producto.id, -1)}
+        disabled={stock === 0}
+      >
+        - Stock
+      </button>
+
+      <br />
+
+      {/* Botón eliminar */}
+      <button
+        onClick={() => onEliminar(producto.id)}
+      >
+        Eliminar
       </button>
     </article>
   );
