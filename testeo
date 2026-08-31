@@ -1,0 +1,30 @@
+# Pruebas QA - Taller 3
+
+## Pruebas realizadas
+
+| Prueba | Resultado esperado | Resultado |
+|---|---|---|
+| Agregar producto válido | Debe agregarse | ✅ Correcto |
+| Nombre vacío | No debe agregarse | ✅ Correcto |
+| Precio 0 | No debe agregarse | ✅ Correcto |
+| Precio negativo | No debe agregarse | ✅ Correcto |
+| Stock negativo | No debe agregarse | ✅ Correcto |
+| Eliminar producto | Debe desaparecer | ✅ Correcto |
+| Aumentar stock | Debe incrementar | ✅ Correcto |
+| Disminuir stock | Debe disminuir | ✅ Correcto |
+| Stock en 0 + botón menos | No debe quedar negativo | ✅ Correcto |
+| Agregar producto | Indicadores deben actualizarse | ✅ Correcto |
+| Eliminar producto | Indicadores deben actualizarse | ✅ Correcto |
+| Modificar stock | Valor del inventario debe actualizarse | ✅ Correcto |
+
+## Observaciones
+
+- Se verificó que los productos se agreguen sin recargar la página.
+- Se verificó que la validación impida registrar datos inválidos.
+- Se verificó que el stock no pueda ser negativo.
+- Se verificó que los indicadores cambien al modificar el inventario.
+- Se verificó que los productos eliminados desaparezcan del catálogo.
+
+## Resultado final
+
+Las pruebas principales fueron satisfactorias y la aplicación cumple con las funcionalidades solicitadas en el Taller 3.
