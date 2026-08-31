@@ -13,6 +13,15 @@ function App() {
   const [categoria, setCategoria] = useState("Todas");
   const [soloDisponibles, setSoloDisponibles] = useState(false);
 
+
+
+    const agregarProducto = (nuevoProducto) => {
+      setProductos([
+      ...productos,
+      nuevoProducto
+      ]);
+    };
+
   // ... el resto del código se queda igual por ahora
   // ===== Filtro =====
   const productosFiltrados = productos.filter((producto) => {
@@ -47,7 +56,8 @@ function App() {
   return (
     
     <div className="App">
-      <FormularioProducto />
+      <FormularioProducto onAgregar={agregarProducto}/>
+      <form onSubmit={manejarEnvio}></form>
       <h1>Catálogo de Productos</h1>
 
       {/* Controles */}
