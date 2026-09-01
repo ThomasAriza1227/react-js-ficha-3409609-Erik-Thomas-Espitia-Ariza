@@ -5,7 +5,6 @@ import productosIniciales from "./data/productos";
 import "./App.css";
 
 function App() {
-function App() {
   // Productos como estado
   const [productos, setProductos] = useState(obtenerProductosIniciales);
   const [busqueda, setBusqueda] = useState("");
@@ -316,6 +315,5 @@ const productosOrdenados = [...productosFiltrados].sort((a, b) => {
 
     </div>
   );
-}
 }
 export default App;
