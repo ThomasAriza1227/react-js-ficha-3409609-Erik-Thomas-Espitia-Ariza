@@ -5,13 +5,14 @@ import productosIniciales from "./data/productos";
 import "./App.css";
 
 function App() {
+function App() {
   // Productos como estado
   const [productos, setProductos] = useState(obtenerProductosIniciales);
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
-  const [soloDisponibles, setSoloDisponibles] = useState(false);
-  const [productoEditando, setProductoEditando] = useState(null); // ← faltaba esto
-
+  const [filtroEstado, setFiltroEstado] = useState("Todos");   
+  const [orden, setOrden] = useState("nombre-az");             
+  const [productoEditando, setProductoEditando] = useState(null);
   useEffect(() => {
     localStorage.setItem(
       "inventario",
@@ -74,24 +75,45 @@ function App() {
   };
 
   // Filtro
-  const productosFiltrados = productos.filter((producto) => {
-    const coincideNombre = producto.nombre
-      .toLowerCase()
-      .includes(busqueda.toLowerCase());
+const productosFiltrados = productos.filter((producto) => {
+  const coincideNombre = producto.nombre
+    .toLowerCase()
+    .includes(busqueda.toLowerCase());
 
-    const coincideCategoria =
-      categoria === "Todas" ||
-      producto.categoria === categoria;
+  const coincideCategoria =
+    categoria === "Todas" ||
+    producto.categoria === categoria;
 
-    const coincideStock =
-      !soloDisponibles || producto.stock > 0;
+  // Filtro de estado
+  let coincideEstado = true;
+  if (filtroEstado === "Disponibles") {
+    coincideEstado = producto.stock > 0;
+  } else if (filtroEstado === "Agotados") {
+    coincideEstado = producto.stock === 0;
+  }
 
-    return (
-      coincideNombre &&
-      coincideCategoria &&
-      coincideStock
-    );
-  });
+  return coincideNombre && coincideCategoria && coincideEstado;
+});
+
+// Crear copia y ordenar (buena práctica)
+const productosOrdenados = [...productosFiltrados].sort((a, b) => {
+  if (orden === "nombre-az") {
+    return a.nombre.localeCompare(b.nombre);
+  }
+  if (orden === "precio-asc") {
+    return a.precio - b.precio;
+  }
+  if (orden === "precio-desc") {
+    return b.precio - a.precio;
+  }
+  if (orden === "stock-asc") {
+    return a.stock - b.stock;
+  }
+  if (orden === "stock-desc") {
+    return b.stock - a.stock;
+  }
+  return 0;
+});
 
   // Producto económico
   const productoEconomico = productos.reduce(
@@ -164,68 +186,67 @@ function App() {
 
       </div>
 
+
       {/* Controles */}
-      <div className="controles">
+<div className="controles">
 
-        <input
-          type="text"
-          placeholder="Buscar producto..."
-          value={busqueda}
-          onChange={(evento) =>
-            setBusqueda(evento.target.value)
-          }
-        />
+  <input
+    type="text"
+    placeholder="Buscar producto..."
+    value={busqueda}
+    onChange={(evento) => setBusqueda(evento.target.value)}
+  />
 
-        <select
-          value={categoria}
-          onChange={(evento) =>
-            setCategoria(evento.target.value)
-          }
-        >
-          <option value="Todas">Todas</option>
-          <option value="Perifericos">
-            Periféricos
-          </option>
-          <option value="Pantallas">
-            Pantallas
-          </option>
-          <option value="Audio">
-            Audio
-          </option>
-          <option value="Almacenamiento">
-            Almacenamiento
-          </option>
-          <option value="Componentes">
-            Componentes
-          </option>
-          <option value="Mobiliario">
-            Mobiliario
-          </option>
-        </select>
+  <select
+    value={categoria}
+    onChange={(evento) => setCategoria(evento.target.value)}
+  >
+    <option value="Todas">Todas</option>
+    <option value="Perifericos">Periféricos</option>
+    <option value="Pantallas">Pantallas</option>
+    <option value="Audio">Audio</option>
+    <option value="Almacenamiento">Almacenamiento</option>
+    <option value="Componentes">Componentes</option>
+    <option value="Mobiliario">Mobiliario</option>
+  </select>
 
-        <label>
-          <input
-            type="checkbox"
-            checked={soloDisponibles}
-            onChange={(evento) =>
-              setSoloDisponibles(
-                evento.target.checked
-              )
-            }
-          />
-          Solo disponibles
-        </label>
+  {/* Filtro de estado */}
+  <select
+    value={filtroEstado}
+    onChange={(evento) => setFiltroEstado(evento.target.value)}
+  >
+    <option value="Todos">Todos</option>
+    <option value="Disponibles">Disponibles</option>
+    <option value="Agotados">Agotados</option>
+  </select>
 
-        {/* Botón limpiar filtros */}
-        <button
-          className="btn-limpiar"
-          onClick={limpiarFiltros}
-        >
-          Limpiar filtros
-        </button>
+  {/* Ordenamiento */}
+  <select
+    value={orden}
+    onChange={(evento) => setOrden(evento.target.value)}
+  >
+    <option value="nombre-az">Nombre A-Z</option>
+    <option value="precio-asc">Precio menor a mayor</option>
+    <option value="precio-desc">Precio mayor a menor</option>
+    <option value="stock-asc">Stock menor a mayor</option>
+    <option value="stock-desc">Stock mayor a menor</option>
+  </select>
 
-      </div>
+  <button
+    className="btn-limpiar"
+    onClick={() => {
+      setBusqueda("");
+      setCategoria("Todas");
+      setFiltroEstado("Todos");
+      setOrden("nombre-az");
+    }}
+  >
+    Limpiar filtros
+  </button>
 
+</div>
+
+      
       {/* Contador */}
       <p className="contador">
         Productos encontrados:{" "}
@@ -279,22 +300,22 @@ function App() {
       )}
 
       {/* Catálogo */}
-      <div className="catalogo">
+<div className="catalogo">
 
-        {productosFiltrados.map((producto) => (
-          <ProductoCard
-            key={producto.id}
-            producto={producto}
-            onEliminar={eliminarProducto}
-            modificarStock={modificarStock}
-            onEditar={setProductoEditando}
-          />
-        ))}
+  {productosOrdenados.map((producto) => (
+    <ProductoCard
+      key={producto.id}
+      producto={producto}
+      onEliminar={eliminarProducto}
+      modificarStock={modificarStock}
+      onEditar={setProductoEditando}
+    />
+  ))}
 
-      </div>
+</div>
 
     </div>
   );
 }
-
+}
 export default App;
