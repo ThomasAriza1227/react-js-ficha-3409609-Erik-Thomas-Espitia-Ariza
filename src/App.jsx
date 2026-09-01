@@ -12,6 +12,7 @@ function App() {
   const [filtroEstado, setFiltroEstado] = useState("Todos");   
   const [orden, setOrden] = useState("nombre-az");             
   const [productoEditando, setProductoEditando] = useState(null);
+  const [mensaje, setMensaje] = useState("");
   useEffect(() => {
     localStorage.setItem(
       "inventario",
@@ -38,6 +39,7 @@ function App() {
 
     setProductos(nuevaLista);
     setProductoEditando(null);
+    setMensaje("Producto actualizado correctamente.");
   };
 
   // Modificar stock
@@ -63,6 +65,8 @@ function App() {
     );
 
     setProductos(nuevaLista);
+      setMensaje("Producto eliminado.");
+
   };
 
   // Agregar producto
@@ -71,6 +75,7 @@ function App() {
       ...productos,
       nuevoProducto,
     ]);
+    setMensaje("Producto agregado correctamente.");
   };
 
   // Filtro
@@ -162,6 +167,7 @@ const productosOrdenados = [...productosFiltrados].sort((a, b) => {
       />
 
       <h1>Catálogo de Productos</h1>
+      {mensaje && <p>{mensaje}</p>}
 
       {/* ===== Misión 8: Tablero dinámico ===== */}
       <div className="indicadores">
