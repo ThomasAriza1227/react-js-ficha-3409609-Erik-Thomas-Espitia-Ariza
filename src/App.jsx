@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductoCard from "./components/ProductoCard";
 import FormularioProducto from "./components/FormularioProducto";
 import productosIniciales from "./data/productos";
@@ -10,6 +10,14 @@ function App() {
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
   const [soloDisponibles, setSoloDisponibles] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "inventario",
+      JSON.stringify(productos)
+    );
+  }, [productos]);
+
 
   // Modificar stock
   const modificarStock = (id, cambio) => {
@@ -264,5 +272,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
