@@ -10,6 +10,7 @@ function App() {
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
   const [soloDisponibles, setSoloDisponibles] = useState(false);
+  const [productoEditando, setProductoEditando] = useState(null); // ← faltaba esto
 
   useEffect(() => {
     localStorage.setItem(
@@ -18,8 +19,6 @@ function App() {
     );
   }, [productos]);
 
-
-
   function obtenerProductosIniciales() {
     const guardados =
       localStorage.getItem("inventario");
@@ -27,9 +26,19 @@ function App() {
       return JSON.parse(guardados);
     }
 
-  return productosIniciales;
-  };
+    return productosIniciales;
+  }
 
+  const actualizarProducto = (actualizado) => {
+    const nuevaLista = productos.map((producto) =>
+      producto.id === actualizado.id
+        ? actualizado
+        : producto
+    );
+
+    setProductos(nuevaLista);
+    setProductoEditando(null);
+  };
 
   // Modificar stock
   const modificarStock = (id, cambio) => {
@@ -127,6 +136,8 @@ function App() {
       {/* Formulario */}
       <FormularioProducto
         onAgregar={agregarProducto}
+        onActualizar={actualizarProducto}
+        productoEditando={productoEditando}
       />
 
       <h1>Catálogo de Productos</h1>
@@ -276,6 +287,7 @@ function App() {
             producto={producto}
             onEliminar={eliminarProducto}
             modificarStock={modificarStock}
+            onEditar={setProductoEditando}
           />
         ))}
 
@@ -284,6 +296,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
