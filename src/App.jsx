@@ -6,7 +6,7 @@ import "./App.css";
 
 function App() {
   // Productos como estado
-  const [productos, setProductos] = useState(productosIniciales);
+  const [productos, setProductos] = useState(obtenerProductosIniciales);
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
   const [soloDisponibles, setSoloDisponibles] = useState(false);
@@ -17,6 +17,18 @@ function App() {
       JSON.stringify(productos)
     );
   }, [productos]);
+
+
+
+  function obtenerProductosIniciales() {
+    const guardados =
+      localStorage.getItem("inventario");
+    if (guardados) {
+      return JSON.parse(guardados);
+    }
+
+  return productosIniciales;
+  };
 
 
   // Modificar stock
