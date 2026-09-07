@@ -1,3 +1,5 @@
+import { NavLink } from "react-router";
+
 function ProductoCard({ producto, onEliminar, modificarStock, onEditar }) {
   const { nombre, precio, categoria, stock } = producto;
 
@@ -33,6 +35,13 @@ function ProductoCard({ producto, onEliminar, modificarStock, onEditar }) {
       >
         {stock > 0 ? "Ver producto" : "Agotado"}
       </button>
+
+      <br />
+
+      {/* Enlace para ver el detalle dinámico */}
+      <NavLink to={`/productos/${producto.id}`}>
+        Ver detalle
+      </NavLink>
 
       <br />
 
