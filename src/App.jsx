@@ -3,6 +3,14 @@ import ProductoCard from "./components/ProductoCard";
 import FormularioProducto from "./components/FormularioProducto";
 import productosIniciales from "./data/productos";
 import "./App.css";
+import { Routes, Route } from "react-router";
+import Inicio from "./pages/Inicio";
+import Inventario from "./pages/Inventario";
+import NuevoProducto from "./pages/NuevoProducto";
+import Acerca from "./pages/Acerca";
+import NoEncontrado from "./pages/NoEncontrado";
+
+
 
 function App() {
   // Productos como estado
@@ -158,6 +166,16 @@ const productosOrdenados = [...productosFiltrados].sort((a, b) => {
 
   return (
     <div className="App">
+
+      <nav>
+        <Routes>
+          <Route path="/" element={<Inicio />} />
+          <Route path="/inventario" element={<Inventario />} />
+          <Route path="/nuevo" element={<NuevoProducto />} />
+          <Route path="/acerca" element={<Acerca />} />
+          <Route path="*" element={<NoEncontrado />} />
+        </Routes>
+      </nav>
 
       {/* Formulario */}
       <FormularioProducto
